@@ -41,6 +41,64 @@ namespace University.Objects
     {
       _enrollDate = newEnrollDate;
     }
-    //methods go here
+
+    public static List<Student> GetAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM students", conn);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Student> students = new List<Student>{};
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string name = rdr.GetString(1);
+        DateTime enrollDate = rdr.GetDateTime(2);
+        Student newStudent = new Student(name, enrollDate, id);
+        students.Add(newStudent);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+
+      return students;
+    }
+
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO students (name, enroll_date) OUTPUT INSERTED.id VALUES (@StudentName, @EnrollDate)", conn);
+
+      SqlParameter nameParameter = new SqlParameter("@StudentName", this.GetName());
+      SqlParameter enrollParameter = new SqlParameter("@EnrollDate", this.GetEnrollDate());
+
+      cmd.Parameters.Add(nameParameter);
+      cmd.Parameters.Add(enrollParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
   }
 }
