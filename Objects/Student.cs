@@ -130,5 +130,41 @@ namespace University.Objects
         conn.Close();
       }
     }
+
+    public static Student Find(int idToFind)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM students WHERE id = @StudentId", conn);
+      SqlParameter idParam = new SqlParameter("@StudentId", idToFind);
+      cmd.Parameters.Add(idParam);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int id = 0;
+      string name = null;
+      DateTime enrollDate = default(DateTime);
+
+      while(rdr.Read())
+      {
+        id = rdr.GetInt32(0);
+        name = rdr.GetString(1);
+        enrollDate = rdr.GetDateTime(2);
+      }
+
+      Student foundStudent  = new Student(name, enrollDate, id);
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+
+      return foundStudent; 
+    }
   }
 }

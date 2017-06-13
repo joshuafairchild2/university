@@ -40,6 +40,18 @@ namespace University.Objects
 
       Assert.Equal(newStudent, testStudent);
     }
+
+    [Fact]
+    public void Student_Find_FindsStudentInDB()
+    {
+      Student controlStudent = new Student("David", new DateTime(2015, 05, 12));
+      controlStudent.Save();
+
+      Student testStudent = Student.Find(controlStudent.GetId());
+
+      Assert.Equal(controlStudent, testStudent);
+    }
+
     public void Dispose()
     {
       Student.DeleteAll();
