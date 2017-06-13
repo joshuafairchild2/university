@@ -52,6 +52,40 @@ namespace University.Objects
       Assert.Equal(controlStudent, testStudent);
     }
 
+    [Fact]
+    public void Student_AddCourse_AddCourseToStudent()
+    {
+      Student newStudent = new Student("David", new DateTime(2015, 05, 12));
+      newStudent.Save();
+
+      Course firstCourse = new Course("Computer Science", "CS101");
+      firstCourse.Save();
+      Course secondCourse = new Course("Computer Science 2", "CS102");
+      secondCourse.Save();
+
+      newStudent.AddCourse(firstCourse);
+      newStudent.AddCourse(secondCourse);
+
+      List<Course> studentCourses = newStudent.GetCourses();
+      List<Course> controlCourses = new List<Course>{firstCourse, secondCourse};
+
+      Assert.Equal(controlCourses, studentCourses);
+    }
+
+    [Fact]
+    public void Student_Delete_DeleteSingleStudentFromDB()
+    {
+      Student newStudent = new Student("David", new DateTime(2015, 05, 12));
+      newStudent.Save();
+
+      newStudent.Delete();
+
+      List<Student> testList = Student.GetAll();
+      List<Student> controlList = new List<Student>{};
+
+      Assert.Equal(controlList, testList);
+    }
+
     public void Dispose()
     {
       Student.DeleteAll();

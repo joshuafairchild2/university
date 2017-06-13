@@ -164,7 +164,78 @@ namespace University.Objects
         conn.Close();
       }
 
-      return foundStudent; 
+      return foundStudent;
+    }
+
+    public void AddCourse(Course newCourse)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO students_courses (student_id, course_id) VALUES (@StudentId, @CourseId);", conn);
+
+      SqlParameter studentParam = new SqlParameter("@StudentId", this.GetId());
+      SqlParameter courseParam = new SqlParameter("@CourseId", newCourse.GetId());
+
+      cmd.Parameters.Add(studentParam);
+      cmd.Parameters.Add(courseParam);
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public List<Course> GetCourses()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT courses.* FROM students JOIN students_courses ON (students.id = students_courses.student_id) JOIN courses ON (courses.id = students_courses.course_id) WHERE students.id = @StudentId;", conn);
+
+      SqlParameter studentParameter = new SqlParameter("@StudentId", this.GetId());
+      cmd.Parameters.Add(studentParameter);
+
+      List<Course> courses = new List<Course>{};
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string name = rdr.GetString(1);
+        string course = rdr.GetString(2);
+        Course newCourse = new Course(name, course, id);
+        courses.Add(newCourse);
+      }
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+
+      return courses;
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM students WHERE id = @StudentId;", conn);
+      SqlParameter idParam = new SqlParameter("@StudentId", this.GetId());
+      cmd.Parameters.Add(idParam);
+      
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
     }
   }
 }
