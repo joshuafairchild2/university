@@ -122,7 +122,7 @@ namespace University.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM students;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM students; DELETE FROM students_courses;", conn);
       cmd.ExecuteNonQuery();
 
       if(conn != null)
@@ -226,10 +226,10 @@ namespace University.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM students WHERE id = @StudentId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM students WHERE id = @StudentId; DELETE FROM students_courses WHERE student_id = @StudentId;", conn);
       SqlParameter idParam = new SqlParameter("@StudentId", this.GetId());
       cmd.Parameters.Add(idParam);
-      
+
       cmd.ExecuteNonQuery();
 
       if(conn != null)
