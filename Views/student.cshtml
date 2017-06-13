@@ -1,0 +1,19 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+
+<h2>Student name: @Model["selected-student"].GetName()</h2>
+<h3>Date of enrollment: @Model["selected-student"].GetEnrollDate()</h3>
+
+@if(Model["courses"].Count == 0)
+{
+  <h4>This student is not currently taking any courses.</h4>
+}
+else
+{
+  <h4>This student is enrolled in the following courses:</h4>
+  @foreach(var course in @Model["courses"])
+  {
+    <h4>@course.GetName() <small>(@course.GetCourseNumber)</small></h4>
+  }
+}

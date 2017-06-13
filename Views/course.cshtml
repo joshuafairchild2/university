@@ -1,0 +1,39 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+
+<h2>Course name: @Model["selected-course"].GetName()</h2>
+<h3>@Model["selected-course"].GetCourseNumber()</h3>
+
+@if(Model["students"].Count == 0)
+{
+  <h4>No students are currently taking this course.</h4>
+}
+else
+{
+  <h4>This following students are enrolled in this course:</h4>
+  @foreach(var student in @Model["students"])
+  {
+    <h4>@student.GetName() <small>Enrolled: (@student.GetEnrollDate())</small></h4>
+  }
+}
+<h3>Add student to this class:</h3>
+<form action='/courses/@Model["selected-course"].GetId()' method="post">
+  <div class="form-group">
+    <select name="selected-student">
+      @foreach(var student in @Model["all-students"])
+      {
+        @foreach(var checkStudent in @Model["students"])
+        {
+          @if(!@Model["fake-students"].Contains(student))
+          {
+            <option value="@student.GetId()">@student.GetName()</option>
+            @{Model["fake-students"].Add(student)};
+            @{break;}
+          }
+        }
+      }
+    </select>
+  </div>
+  <button type="submit" class="button-hover btn">Add to class</button>
+</form>

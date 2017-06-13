@@ -30,6 +30,60 @@ namespace University
         List<Student> allStudents = Student.GetAll();
         return View["students.cshtml", allStudents];
       };
+
+      Get["/courses"] = _ => {
+        List<Course> allCourses = Course.GetAll();
+        return View["courses.cshtml", allCourses];
+      };
+
+      Get["/courses/new"] = _ => {
+        return View["new_course.cshtml"];
+      };
+
+      Post["/courses"] = _ => {
+        Course newCourse = new Course(Request.Form["course-name"], Request.Form["course-number"]);
+        newCourse.Save();
+        List<Course> allCourses = Course.GetAll();
+        return View["courses.cshtml", allCourses];
+      };
+
+      Get["/courses/{courseId}"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Course selectedCourse = Course.Find(parameters.courseId);
+        List<Student> students = selectedCourse.GetStudents();
+        List<Student> allStudents = Student.GetAll();
+        List<Student> fakeStudents = selectedCourse.GetStudents();
+        model.Add("fake-students", fakeStudents);
+        model.Add("selected-course", selectedCourse);
+        model.Add("students", students);
+        model.Add("all-students", allStudents);
+        return View["course.cshtml", model];
+      };
+
+      Get["/students/{studentId}"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Student selectedStudent = Student.Find(parameters.studentId);
+        List<Course> courses = selectedStudent.GetCourses();
+        List<Course> allCourses = Course.GetAll();
+        model.Add("selected-student", selectedStudent);
+        model.Add("courses", courses);
+        model.Add("all-courses", allCourses);
+        return View["student.cshtml", model];
+      };
+
+      Post["/courses/{courseId}"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>{};
+        Course selectedCourse = Course.Find(parameters.courseId);
+        selectedCourse.AddStudent(Student.Find(Request.Form["selected-student"]));
+        List<Student> students = selectedCourse.GetStudents();
+        List<Student> fakeStudents = selectedCourse.GetStudents();
+        List<Student> allStudents = Student.GetAll();
+        model.Add("selected-course", selectedCourse);
+        model.Add("students", students);
+        model.Add("all-students", allStudents);
+        model.Add("fake-students", fakeStudents);
+        return View["course.cshtml", model];
+      };
     }
   }
 }

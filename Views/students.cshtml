@@ -10,9 +10,15 @@ else
 {
   @foreach(var student in @Model)
   {
-    <h4>@student.GetName()</h4>
+    <h4><a href="/students/@student.GetId()">@student.GetName()</a></h4>
   }
 
 }
 
-<a href="/students/new">Click to add new student</a>
+<p>
+  <a href="/students/new">Click to add new student</a>
+</p>
+
+<p>
+  <a href="/">Click here to go back </a>
+</p>
