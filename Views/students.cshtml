@@ -1,0 +1,18 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+
+@if(Model.Count == 0)
+{
+  <h4>There are no students in this university!</h4>
+}
+else
+{
+  @foreach(var student in @Model)
+  {
+    <h4>@student.GetName()</h4>
+  }
+
+}
+
+<a href="/students/new">Click to add new student</a>

@@ -14,6 +14,22 @@ namespace University
       Get["/"] = _ => {
         return View["index.cshtml"];
       };
+
+      Get["/students"] = _ => {
+        List<Student> allStudents = Student.GetAll();
+        return View["students.cshtml", allStudents];
+      };
+
+      Get["/students/new"] = _ => {
+        return View["new_student.cshtml"];
+      };
+
+      Post["/students"] = _ => {
+        Student newStudent = new Student(Request.Form["student-name"], DateTime.Now);
+        newStudent.Save();
+        List<Student> allStudents = Student.GetAll();
+        return View["students.cshtml", allStudents];
+      };
     }
   }
 }

@@ -1,3 +1,14 @@
 /*body{
   background-color: blue;
 }*/
+
+.button-hover {
+  font-size: 20px;
+}
+
+.button-hover:hover {
+  /*background-color: #6DA398;
+  color: white;*/
+  border: 1px solid black;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
