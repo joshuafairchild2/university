@@ -70,6 +70,20 @@ namespace University.Objects
       Assert.Equal(controlList, testList);
     }
 
+    [Fact]
+    public void Course_Delete_DeleteCourse()
+    {
+      Course newCourse = new Course("Computer Science", "CS101");
+      newCourse.Save();
+
+      newCourse.Delete();
+
+      List<Course> newList = Course.GetAll();
+      List<Course> controlList = new List<Course>{};
+
+      Assert.Equal(controlList, newList);
+    }
+
     public void Dispose()
     {
       Course.DeleteAll();

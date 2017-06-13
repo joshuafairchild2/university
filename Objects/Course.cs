@@ -218,5 +218,21 @@ namespace University.Objects
 
       return students;
     }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM courses WHERE id = @CourseId;", conn);
+      SqlParameter idParam = new SqlParameter("@CourseId", this.GetId());
+      cmd.Parameters.Add(idParam);
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
   }
 }
