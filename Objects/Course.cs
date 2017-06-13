@@ -234,5 +234,40 @@ namespace University.Objects
         conn.Close();
       }
     }
+
+    public static List<Course> Search(string searchQuery)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM courses WHERE name LIKE @SearchQuery", conn);
+
+      SqlParameter nameParam = new SqlParameter("@SearchQuery", searchQuery + "%");
+      cmd.Parameters.Add(nameParam);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Course> matches = new List<Course>{};
+
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string name = rdr.GetString(1);
+        string number = rdr.GetString(2);
+        Course newCourse = new Course(name, number, id);
+        matches.Add(newCourse);
+      }
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+
+      return matches;
+    }
   }
 }

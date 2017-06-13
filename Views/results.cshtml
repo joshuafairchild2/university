@@ -1,0 +1,11 @@
+@{
+  Layout = "Shared/_Layout.cshtml";
+}
+
+
+@foreach(var course in Model)
+{
+  <h4><a href="/courses/@course.GetId()">@course.GetName() <small>@course.GetCourseNumber()</small></a></h4>
+}
+
+<a href="/">Home</a>

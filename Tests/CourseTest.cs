@@ -84,6 +84,24 @@ namespace University.Objects
       Assert.Equal(controlList, newList);
     }
 
+    [Fact]
+    public void Course_Search_FindsCoursesByName()
+    {
+      Course course1 = new Course("Computer Science", "CS101");
+      course1.Save();
+      Course course2 = new Course("computer science", "CS102");
+      course2.Save();
+      Course course3 = new Course("Biology", "SCI101");
+      course3.Save();
+      Course course4 = new Course("computer sci", "CS105");
+      course4.Save();
+
+      List<Course> testList = Course.Search("Computer");
+      List<Course> controlList = new List<Course>{course1, course2, course4};
+
+      Assert.Equal(controlList, testList);
+    }
+
     public void Dispose()
     {
       Course.DeleteAll();

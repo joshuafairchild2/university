@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Nancy;
 using University.Objects;
-// using System.Data;
-// using System.Data.SqlClient;
 
 namespace University
 {
@@ -98,6 +96,11 @@ namespace University
         Student.DeleteAll();
         List<Student> allStudents = Student.GetAll();
         return View["students.cshtml", allStudents];
+      };
+
+      Get["/courses/results"] = _ => {
+        List<Course> matches = Course.Search(Request.Form["search"]);
+        return View["results.cshtml", matches];
       };
     }
   }
