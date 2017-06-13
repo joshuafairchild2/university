@@ -15,10 +15,13 @@ else
 
 }
 
-<p>
-  <a href="/students/new">Click to add new student</a>
-</p>
+<p><a href="/students/new">Click to add new student</a></p>
+<p><a href="/">Click here to go back </a></p>
 
-<p>
-  <a href="/">Click here to go back </a>
-</p>
+@if(Model.Count != 0)
+{
+  <form action="/students" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="btn btn-danger button-hover btn-sm">Delete all students</button>
+  </form>
+}

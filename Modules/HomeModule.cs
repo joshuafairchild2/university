@@ -93,6 +93,12 @@ namespace University
         List<Course> allCourses = Course.GetAll();
         return View["courses.cshtml", allCourses];
       };
+
+      Delete["/students"] = _ => {
+        Student.DeleteAll();
+        List<Student> allStudents = Student.GetAll();
+        return View["students.cshtml", allStudents];
+      };
     }
   }
 }
