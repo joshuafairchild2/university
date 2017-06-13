@@ -42,7 +42,7 @@ namespace University.Objects
     }
     public void Dispose()
     {
-      // Student.DeleteAll();
+      Student.DeleteAll();
     }
   }
 }

@@ -42,6 +42,22 @@ namespace University.Objects
       _enrollDate = newEnrollDate;
     }
 
+    public override bool Equals(System.Object otherStudent)
+    {
+      if(!(otherStudent is Student))
+      {
+        return false;
+      }
+      else
+      {
+        Student newStudent = (Student) otherStudent;
+        bool nameEquality = this.GetName() == newStudent.GetName();
+        bool idEquality = this.GetId() == newStudent.GetId();
+        bool enrollDateEquality = this.GetEnrollDate() == newStudent.GetEnrollDate();
+        return (nameEquality && idEquality && enrollDateEquality);
+      }
+    }
+
     public static List<Student> GetAll()
     {
       SqlConnection conn = DB.Connection();
@@ -95,6 +111,20 @@ namespace University.Objects
       {
         rdr.Close();
       }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM students;", conn);
+      cmd.ExecuteNonQuery();
+
       if(conn != null)
       {
         conn.Close();
