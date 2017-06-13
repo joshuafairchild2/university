@@ -52,8 +52,6 @@ namespace University
         Course selectedCourse = Course.Find(parameters.courseId);
         List<Student> students = selectedCourse.GetStudents();
         List<Student> allStudents = Student.GetAll();
-        List<Student> fakeStudents = selectedCourse.GetStudents();
-        model.Add("fake-students", fakeStudents);
         model.Add("selected-course", selectedCourse);
         model.Add("students", students);
         model.Add("all-students", allStudents);
@@ -76,13 +74,24 @@ namespace University
         Course selectedCourse = Course.Find(parameters.courseId);
         selectedCourse.AddStudent(Student.Find(Request.Form["selected-student"]));
         List<Student> students = selectedCourse.GetStudents();
-        List<Student> fakeStudents = selectedCourse.GetStudents();
         List<Student> allStudents = Student.GetAll();
         model.Add("selected-course", selectedCourse);
         model.Add("students", students);
         model.Add("all-students", allStudents);
-        model.Add("fake-students", fakeStudents);
         return View["course.cshtml", model];
+      };
+
+      Delete["/students/{student_id}/delete"] = parameters => {
+        Student foundStudent = Student.Find(parameters.student_id);
+        foundStudent.Delete();
+        List<Student> allStudents = Student.GetAll();
+        return View["students.cshtml", allStudents];
+      };
+
+      Delete["/courses"] = _ => {
+        Course.DeleteAll();
+        List<Course> allCourses = Course.GetAll();
+        return View["courses.cshtml", allCourses];
       };
     }
   }

@@ -17,23 +17,34 @@ else
     <h4>@student.GetName() <small>Enrolled: (@student.GetEnrollDate())</small></h4>
   }
 }
-<h3>Add student to this class:</h3>
-<form action='/courses/@Model["selected-course"].GetId()' method="post">
-  <div class="form-group">
-    <select name="selected-student">
-      @foreach(var student in @Model["all-students"])
-      {
-        @foreach(var checkStudent in @Model["students"])
+
+@if(@Model["all-students"].Count != @Model["students"].Count)
+{
+  <h3>Add student to this class:</h3>
+  <form action='/courses/@Model["selected-course"].GetId()' method="post">
+    <div class="form-group">
+      <select name="selected-student">
+        @foreach(var student in @Model["all-students"])
         {
-          @if(!@Model["fake-students"].Contains(student))
+          @if(@Model["students"].Count != 0)
+          {
+            @foreach(var checkStudent in @Model["students"])
+            {
+              @if(!@Model["students"].Contains(student))
+              {
+                <option value="@student.GetId()">@student.GetName()</option>
+                @{break;}
+              }
+            }
+          }
+          else
           {
             <option value="@student.GetId()">@student.GetName()</option>
-            @{Model["fake-students"].Add(student)};
-            @{break;}
           }
         }
-      }
-    </select>
-  </div>
-  <button type="submit" class="button-hover btn">Add to class</button>
-</form>
+      </select>
+    </div>
+    <button type="submit" class="button-hover btn">Add to class</button>
+  </form>
+}
+<p><a href="/">Home</a></p>

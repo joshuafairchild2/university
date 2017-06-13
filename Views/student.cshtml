@@ -14,6 +14,12 @@ else
   <h4>This student is enrolled in the following courses:</h4>
   @foreach(var course in @Model["courses"])
   {
-    <h4>@course.GetName() <small>(@course.GetCourseNumber)</small></h4>
+    <h4>@course.GetName() <small>(@course.GetCourseNumber())</small></h4>
   }
 }
+
+<form action="/students/@Model["selected-student"].GetId()/delete" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <button type="submit" name="button" class = "button-hover btn">Delete Person</button>
+
+</form>
