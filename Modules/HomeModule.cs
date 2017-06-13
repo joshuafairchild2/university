@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using Nancy;
 using University.Objects;
+// using System.Data;
+// using System.Data.SqlClient;
 
 namespace University
 {
